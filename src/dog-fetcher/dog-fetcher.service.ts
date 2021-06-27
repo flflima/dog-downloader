@@ -1,11 +1,9 @@
-import { map } from 'rxjs/operators';
 import {
   HttpService,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
 import { DogMessage } from './dto/dog-message';
-import { response } from 'express';
 
 @Injectable()
 export class DogFetcherService {

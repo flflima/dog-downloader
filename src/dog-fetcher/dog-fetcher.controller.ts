@@ -1,6 +1,7 @@
 import { Controller, Get, HttpException, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { DogFetcherService } from './dog-fetcher.service';
+import { getFilename, getContentType } from './utils/http-utils';
 
 @Controller('dog-fetcher')
 export class DogFetcherController {
@@ -13,8 +14,8 @@ export class DogFetcherController {
     return await this.dogFetcherService
       .fetchDogImage()
       .then((response) => {
-        filename = this.getFilename(response.message);
-        content = this.getContentType(filename);
+        filename = getFilename(response.message);
+        content = getContentType(filename);
         return this.dogFetcherService.downloadImage(response.message);
       })
       .then((response) => {
@@ -26,18 +27,5 @@ export class DogFetcherController {
         console.error(err);
         throw new HttpException(`${err} `, 500);
       });
-  }
-
-  getFilename(filename: string) {
-    return filename.split('/').pop();
-  }
-
-  getContentType(filename: string): string {
-    switch (filename.split('.').pop()) {
-      case 'jpg':
-        return 'jpeg';
-      default:
-        return 'jpeg';
-    }
   }
 }
